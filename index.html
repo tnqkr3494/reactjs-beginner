@@ -8,43 +8,23 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
     const root = document.getElementById("root");
-    const Title = () => (
-      <h3 id="title" onMouseEnter={() => console.log("Mouse Entered")}>
-        Hello I'm a span
-      </h3>
-    );
-    /*
-      const h3 = React.createElement(
-        "h3",
-        {
-          onMouseEnter: () => console.log("Mouse Entered"),
-        },
-        "Hello I'm a span"
+
+    function App() {
+      const [counter, setCounter] = React.useState(0);
+      // 인덱스0, 1번째 이름을 정하기. counter = 배열[0], modifier = 배열[1]
+      const onClick = () => {
+        //setCounter(counter + 1);
+        setCounter((current) => current + 1);
+        //위 주석코드랑 동일한 기능 but 이 코드가 더 안전함.
+        //setCounter : 값을 변경시킨뒤 리렌더링
+      };
+      return (
+        <div>
+          <h3>Total Clicks: {counter}</h3>
+          <button onClick={onClick}>Click Me</button>
+        </div>
       );
-      */
-    const Button = () => (
-      <button
-        style={{ backgroundColor: "tomato" }}
-        onClick={() => console.log("I'm clicked")}
-      >
-        Click Me
-      </button>
-    );
-    /*
-    const btn = React.createElement(
-       "button",
-       {
-         onClick: () => console.log("I'm clicked"),
-       },
-       "Click me"
-     );
-      */
-    const Container = () => (
-      <div>
-        <Title />
-        <Button />
-      </div>
-    ); //컴포넌트의 첫번째글짜는 무조건 대문자로 작성하기!
-    ReactDOM.render(<Container />, root);
+    } //컴포넌트의 첫번째글짜는 무조건 대문자로 작성하기!
+    ReactDOM.render(<App />, root);
   </script>
 </html>
