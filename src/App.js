@@ -1,32 +1,26 @@
-import Button from "./Button";
-import styles from "./App.module.css";
 import { useState, useEffect } from "react";
 
-function App() {
-  const [counter, setValue] = useState(0);
-  const [keyword, setKeyword] = useState("");
-  const onClick = () => setValue((prev) => prev + 1);
-  const onChange = (event) => setKeyword(event.target.value);
-  console.log("i run all the time");
-  const iRunOnlyOnce = () => {
-    console.log("i run only once");
-  };
-  useEffect(iRunOnlyOnce, []); //state변화에도 불구하고 오직 한번만 렌더링되고 리렌더링 안되게 만드는 코드
+function Hello() {
+  useEffect(function () {
+    console.log("hi :)");
+    return function () {
+      console.log("bye :(");
+    };
+  }, []);
   useEffect(() => {
-    if (keyword !== "") {
-      console.log("Search for", keyword);
-    }
-  }, [keyword]); //keyword가 변화할때 리렌더링가능
+    console.log("hi :)");
+    return () => console.log("bye :(");
+  }, []);
+  return <h1>Hello</h1>;
+}
+// component를 생성할 때 console.log, 파괴할때 return console.log
+function App() {
+  const [showing, setShowing] = useState(false);
+  const onClick = () => setShowing((prev) => !prev);
   return (
     <div>
-      <input
-        value={keyword}
-        onChange={onChange}
-        type="text"
-        placeholder="Search here..."
-      />
-      <h1>{counter}</h1>
-      <button onClick={onClick}>Click me</button>
+      {showing ? <Hello /> : null}
+      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
     </div>
   );
 }
