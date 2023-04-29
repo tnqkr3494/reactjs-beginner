@@ -8,8 +8,8 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script type="text/babel">
-    //fontsize=16이라고 따로 js상에서 명시해줄 수 있다.
-    function Btn({ banana, changeValue, fontSize = 16 }) {
+    //fontsize=36이라고 따로 js상에서 명시해줄 수 있다.
+    function Btn({ banana, changeValue, fontSize = 36 }) {
       return (
         <button
           onClick={changeValue}
@@ -19,6 +19,7 @@
             padding: "10px, 20px",
             border: 0,
             borderRadius: 10,
+            fontSize: fontSize,
           }}
         >
           {banana}
@@ -37,12 +38,18 @@
     function App() {
       const [value, setValue] = React.useState("Save Changes");
       const changeValue = () => setValue("Revert Changes");
+      const changeValue2 = () => setValue("Save Changes");
       return (
         <div>
           <MemorizedBtn banana={value} changeValue={changeValue} />
-          <MemorizedBtn banana="Continue" text={14} fontSize="hello" />
+          <MemorizedBtn
+            banana="Continue"
+            text="hello"
+            fontSize={14}
+            changeValue={changeValue2}
+          />
         </div>
-      ); // === Btn({banana : "Save Changes"}) obj형태로 props에 전달해준다.(첫번째 argument에)4
+      ); // === Btn({banana : "Save Changes"}) obj형태로 props에 전달해준다.(첫번째 argument에)
     }
     const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
