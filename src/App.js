@@ -1,47 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [toDo, setToDo] = useState("");
-  const [toDos, setToDos] = useState([]);
-  const onChange = (event) => setToDo(event.target.value);
-  const onSubmit = (event) => {
-    event.preventDefault();
-    if (toDo === "") {
-      return;
-    }
-    setToDos((currentArray) => [toDo, ...currentArray]); //...array : array의 요소들을 새로운 배열에 넣어주는것
-    setToDo("");
+  const [loading, setLoading] = useState(true);
+  const [coins, setCoins] = useState([]);
+  const [money, setMoney] = useState(0);
+  const [coin, setCoin] = useState(0);
+  const onChange = (event) => {
+    setMoney(event.target.value);
   };
-  const deleteBtn = (index) => {
-    setToDos(toDos.filter((item, toDoindex) => index !== toDoindex));
+
+  const coinValue = (event) => {
+    setCoin(event.target.value);
   };
+
+  useEffect(() => {
+    fetch("https://api.coinpaprika.com/v1/tickers")
+      .then((response) => response.json())
+      .then((json) => {
+        setCoins(json);
+        setLoading(false);
+        setCoin(json[0].quotes.USD.price);
+      });
+  }, []);
   return (
     <div>
-      <h1>My To Dos ({toDos.length})</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          onChange={onChange}
-          value={toDo}
-          type="text"
-          placeholder="Write your to do..."
-        />
-        <button>Add To Do</button>
-      </form>
-      <hr />
-      <ul>
-        {toDos.map((item, index) => (
-          <li key={index}>
-            {item}
-            <button onClick={() => deleteBtn(index)}>❌</button>
-          </li>
-        ))}
-      </ul>
+      <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
+      {loading ? (
+        <strong>Loading...</strong>
+      ) : (
+        <select onChange={coinValue}>
+          {coins.map((coin) => (
+            <option value={coin.quotes.USD.price}>
+              {coin.name} ({coin.symbol}): ${coin.quotes.USD.price} USD
+            </option>
+          ))}
+        </select>
+      )}
+      <input type="number" placeholder="dolloar" onChange={onChange} />
+      <h2>You can get {money == 0 ? "0" : coin / money}</h2>
     </div>
   );
 }
-/*   
-<button onClick={deleteBtn(index)}>❌</button>
-이렇게 사용하면 deleteBtn함수가아니라 deleteBtn(index) return된 결과값으로 나와서 onClick이벤트에
-함수만 적어야하는데 값을 적은꼴이 되어버려서 위 주석없는 코드처럼 사용한것.
-*/
+
 export default App;
