@@ -54,7 +54,49 @@
     } //컴포넌트의 첫번째글짜는 무조건 대문자로 작성하기!
 
     function KmToMiles() {
-      return <h3>KM 2 M</h3>;
+      const [amount, setAmount] = React.useState(0);
+      const [invert, setInvert] = React.useState(false);
+
+      const onReset = () => {
+        setAmount(0);
+      };
+      const onInvert = () => {
+        onReset();
+        setInvert((current) => !current);
+      };
+
+      const onChange = (event) => {
+        setAmount(event.target.value);
+      };
+
+      return (
+        <div>
+          <div>
+            <span>Km </span>
+            <input
+              value={invert ? 1.6 * amount : amount}
+              placeholder="Km"
+              type="number"
+              disabled={invert}
+              onChange={onChange}
+            />
+          </div>
+          <div>
+            <span>Miles </span>
+            <input
+              value={invert ? amount : amount / 1.6}
+              placeholder="Miles"
+              type="number"
+              disabled={!invert}
+              onChange={onChange}
+            />
+          </div>
+          <div>
+            <button onClick={onReset}>Reset</button>
+            <button onClick={onInvert}>Invert</button>
+          </div>
+        </div>
+      );
     }
 
     function App() {
