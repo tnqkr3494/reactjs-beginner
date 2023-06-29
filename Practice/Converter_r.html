@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    function Calculator() {
+      const [amount, setAmount] = React.useState(0);
+      const [circumference, setCircumference] = React.useState("");
+
+      const onChange = (event) => {
+        setAmount(event.target.value);
+      };
+
+      const onClick = () => {
+        setCircumference(2 * 3.14 * amount);
+      };
+
+      return (
+        <div>
+          <div>
+            <input type="text" placeholder="radius" onChange={onChange} />
+            <button onClick={onClick}>Run</button>
+          </div>
+          <input
+            value={circumference || 0}
+            placeholder="circumference"
+            readOnly
+          />
+        </div>
+      );
+    }
+
+    function App() {
+      return (
+        <div>
+          <h1>Calculator</h1>
+          <Calculator />
+        </div>
+      );
+    }
+    const root = document.getElementById("root");
+    ReactDOM.render(<App />, root);
+  </script>
+</html>
